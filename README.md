@@ -1,3 +1,3 @@
-# Artificial-intelligence
+# Artificial Intelligence
 
 AI Projects
