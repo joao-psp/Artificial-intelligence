@@ -1,34 +1,89 @@
+
 import numpy as np
 
+def degrau(u):
+    y = np.zeros(shape=u.shape, dtype = np.int32)
 
-def initialize(m,t):
-    for i in t:
-        m[i] = 0;
-    return m
+    for i in range(0, u.shape[0]):
+        if len(u.shape) > 1:
+            for j in (range(0,u.shape[1])):
+                if u[i][j] >= 1:
+                    y[i][j] =1
+                else:
+                    y[i][j] = 0
+        else:
+            if u[i] >= 1:
+                y[i] =1
+            else:
+                y[i] = 0
+    return y
 
-def percepton(max_it,alpha, X,D): # num maximo de iteracoes, bias, dados, matriz com saida
-    '''
-        #separar dados de classes
-        #se classe = 1 add [1 0 0]
-            classe = 2 add [0 1 0]
-            classe = 3 add [0 0 1]
-            X e matrix sem a classe
-            D ->
-    '''
-    initialize(W,3)
-    initialize(b,1)
+def erro(e):
+    E = 0
+    i = 0
+    for i in range(0, e.shape[0]):
+        Es = 0
+        j = 0
+        for j in range(0, e.shape[1]):
+            Es += pow(e[i][j],2)
+        E+= Es / j
+    E = E / i
+    return E
+
+def manipulArquivo():
+    arq = open('wine.data','r')  # Le arquivo de dados e sepaara em entrada e saida
+    saidas = []
+    entradas = []
+
+    for linha in arq:
+        linha = linha[:-1]
+        linha = linha.split(',')
+
+        saidas.append(int(linha[0]))
+        entradas.append([float(i) for i in linha[1:] ])
+    arq.close()
+
+    print(len(saidas))
+
+
+    for i in range(0, len(saidas)):
+        s = []
+        if saidas[i] == 1:
+            saidas[i] = [1,0,0]
+        elif saidas[i] ==2:
+            saidas[i] = [0,1,0]
+        elif saidas[i] ==3:
+            saidas[i] = [0,0,1]
+    print(entradas)
+    return entradas, saidas
+
+def perceptron(max_it, alpha, entrada, saida):
+    X = entrada
+    W = np.zeros(shape=(saida.shape[0],entrada.shape[1]))
+    D = saida
+    b = np.zeros(shape=(D.shape[0],1))
+    erro = []
+    tempo = []
 
     t = 1
     E = 1
-    y = []
-    e = []
-    while(t < max_it and E > 0):
-        E = 0
-        for i in 13:
-            y[i] = f(W,X[i],b) # valor da saida
+    e = np.zeros(shape=d.shape)
 
-            e[i] = D[i] - y[i]
-            W = W + b*e[i]*x[i]
-            b = b + b*e[i]
-            E = E + e[i]*e[i]
-        t = t+1
+    while(t<max_it and E > 0):
+        u = np.matmul(w,x) + b
+        y = degrau(u)
+        e = D - y
+        W = W + np.matmul((alpha * e), np.transpose(x))
+        b = b + alpha * e
+        E = erro(e)
+        tempo.append(t)
+        erro.append(E)
+        t= t+1
+
+
+def main():
+    X, D = manipulArquivo()
+    MI = 100
+    alpha = 0.1
+
+    perceptron(MI, alpha, X, D)
