@@ -1,89 +1,77 @@
-
 import numpy as np
 
-def degrau(u):
-    y = np.zeros(shape=u.shape, dtype = np.int32)
+class Perceptron(object):
+    """Implements a perceptron network"""
+    def __init__(self, input_size, saida, epochs=1):
+        print("init")
+        self.W = np.zeros(shape=(saida,input_size))
+        print(self.W)
+        print(self.W.shape)
+        self.epochs = epochs
+        print('\n')
 
-    for i in range(0, u.shape[0]):
-        if len(u.shape) > 1:
-            for j in (range(0,u.shape[1])):
-                if u[i][j] >= 1:
-                    y[i][j] =1
-                else:
-                    y[i][j] = 0
-        else:
-            if u[i] >= 1:
-                y[i] =1
+    def step(self, x):
+        print("activation_fn")
+        print(x.shape)
+        y = np.zeros(shape=(x.shape))
+        for i in range(0, x.shape[0]):
+            if(x[i] >=1):
+                y[i] = 1
             else:
                 y[i] = 0
-    return y
+        print("y: ")
+        print(y)
+        print('\n')
+        return y
 
-def erro(e):
-    E = 0
-    i = 0
-    for i in range(0, e.shape[0]):
-        Es = 0
-        j = 0
-        for j in range(0, e.shape[1]):
-            Es += pow(e[i][j],2)
-        E+= Es / j
-    E = E / i
-    return E
+    def predict(self, x):
+        print('\n')
+        print("Predict")
+        print(x.shape)
+        print(self.W.shape)
+        z = np.matmul(self.W,x)
+        print(z.shape)
+        a = self.activation_fn(z)
+        return a
 
-def manipulArquivo():
-    arq = open('wine.data','r')  # Le arquivo de dados e sepaara em entrada e saida
-    saidas = []
-    entradas = []
+    def transpose1(self,x):
+        #print(x.shape)
+        y = np.zeros(shape=(1,x.shape[0]))
+        y = x.T
+        print(str(x.shape)+"njsdfnk")
+        print(y)
+        print(x)
+        return y
 
-    for linha in arq:
-        linha = linha[:-1]
-        linha = linha.split(',')
-
-        saidas.append(int(linha[0]))
-        entradas.append([float(i) for i in linha[1:] ])
-    arq.close()
-
-    print(len(saidas))
-
-
-    for i in range(0, len(saidas)):
-        s = []
-        if saidas[i] == 1:
-            saidas[i] = [1,0,0]
-        elif saidas[i] ==2:
-            saidas[i] = [0,1,0]
-        elif saidas[i] ==3:
-            saidas[i] = [0,0,1]
-    print(entradas)
-    return entradas, saidas
-
-def perceptron(max_it, alpha, entrada, saida):
-    X = entrada
-    W = np.zeros(shape=(saida.shape[0],entrada.shape[1]))
-    D = saida
-    b = np.zeros(shape=(D.shape[0],1))
-    erro = []
-    tempo = []
-
-    t = 1
-    E = 1
-    e = np.zeros(shape=d.shape)
-
-    while(t<max_it and E > 0):
-        u = np.matmul(w,x) + b
-        y = degrau(u)
-        e = D - y
-        W = W + np.matmul((alpha * e), np.transpose(x))
-        b = b + alpha * e
-        E = erro(e)
-        tempo.append(t)
-        erro.append(E)
-        t= t+1
-
+    def perceptron(self, X, d):
+        aux = np.zeros(shape=(1,13))
+        print('\n')
+        print("fit")
+        t =0
+        while t < self.epochs :
+            for i in range(X.shape[0]):
+                print(X[i])
+                x = X[i]
+                y = self.predict(x)
+                e = d[i] - y
+                print("e: ")
+                self.W = self.W +  np.matmul(e,x)
+            t= t+1
 
 def main():
-    X, D = manipulArquivo()
-    MI = 100
-    alpha = 0.1
+    X = np.array([
+        [1,2,3,4,5,6,7,8,9,10,11,12,13],
+        [1,2,3,4,5,6,7,8,9,10,11,12,13],
+        [1,2,3,4,5,6,7,8,9,10,11,12,13],
+        [1,2,3,4,5,6,7,8,9,10,11,12,13]
+    ])
+    #print(X.shape)
+    d = np.array([[0,0,1],[0,1,0],[0,1,0],[0,0,1]])
+    # print(d[0].shape)
+    # print(d[0].transpose().shape)
 
-    perceptron(MI, alpha, X, D)
+    perceptron = Perceptron(input_size=13, saida=3)
+    perceptron.fit(X, d)
+    print(perceptron.W)
+
+main()
