@@ -48,6 +48,9 @@ class Perceptron(object):
         print('\n')
         print("fit")
         t =0
+        teste = X.T
+        print(teste)
+        print(X)
         while t < self.epochs :
             for i in range(X.shape[0]):
                 print(X[i])
@@ -55,7 +58,7 @@ class Perceptron(object):
                 y = self.predict(x)
                 e = d[i] - y
                 print("e: ")
-                self.W = self.W +  np.matmul(e,x)
+                self.W = self.W + x
             t= t+1
 
 def main():
@@ -71,7 +74,7 @@ def main():
     # print(d[0].transpose().shape)
 
     perceptron = Perceptron(input_size=13, saida=3)
-    perceptron.fit(X, d)
+    perceptron.perceptron(X, d)
     print(perceptron.W)
 
 main()
