@@ -31,7 +31,7 @@ class Perceptron(object):
         print(self.W.shape)
         z = np.matmul(self.W,x)
         print(z.shape)
-        a = self.activation_fn(z)
+        a = self.step(z)
         return a
 
     def transpose1(self,x):
@@ -58,7 +58,7 @@ class Perceptron(object):
                 y = self.predict(x)
                 e = d[i] - y
                 print("e: ")
-                self.W = self.W + x
+                self.W = self.W + e*teste[i]
             t= t+1
 
 def main():
