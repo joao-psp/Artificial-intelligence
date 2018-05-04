@@ -34,31 +34,36 @@ class Perceptron(object):
         a = self.step(z)
         return a
 
-    def transpose1(self,x):
-        #print(x.shape)
-        y = np.zeros(shape=(1,x.shape[0]))
-        y = x.T
-        print(str(x.shape)+"njsdfnk")
-        print(y)
-        print(x)
-        return y
+    # def transpose1(self,x):
+    #     #print(x.shape)
+    #     y = np.zeros(shape=(13,x.shape[1]))
+    #     y = x.T
+    #     print(str(x.shape)+"njsdfnk")
+    #     print(y)
+    #     print(x)
+    #     return y
 
     def perceptron(self, X, d):
-        aux = np.zeros(shape=(1,13))
+        #aux = np.zeros(shape=(1,13))
         print('\n')
         print("fit")
         t =0
-        teste = X.T
-        print(teste)
-        print(X)
         while t < self.epochs :
             for i in range(X.shape[0]):
-                print(X[i])
+                #print(X[i])
                 x = X[i]
                 y = self.predict(x)
                 e = d[i] - y
-                print("e: ")
-                self.W = self.W + e*teste[i]
+                print("e")
+                print(e)
+                aux = x.reshape(1,13)
+                e = e.reshape(3,1)
+                print(e)
+                print(aux)
+                kl = e * aux
+                print (kl)
+                print(self.W.shape)
+                self.W = self.W + e * aux
             t= t+1
 
 def main():
