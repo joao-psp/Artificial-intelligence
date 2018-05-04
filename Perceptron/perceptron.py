@@ -2,11 +2,14 @@ import numpy as np
 
 class Perceptron(object):
     """Implements a perceptron network"""
-    def __init__(self, input_size, saida, epochs=1):
+    def __init__(self, input_size, saida, epochs=1, alpha=0.1):
         print("init")
         self.W = np.zeros(shape=(saida,input_size))
-        print(self.W)
-        print(self.W.shape)
+        self.b = np.zeros(shape=(saida,1))
+        self.alpha = alpha
+        # print(self.b.shape)
+        # print(self.W)
+        # print(self.W.shape)
         self.epochs = epochs
         print('\n')
 
@@ -19,16 +22,16 @@ class Perceptron(object):
                 y[i] = 1
             else:
                 y[i] = 0
-        print("y: ")
-        print(y)
-        print('\n')
+        # print("y: ")
+        # print(y)
+        # print('\n')
         return y
 
     def predict(self, x):
         print('\n')
         print("Predict")
-        print(x.shape)
-        print(self.W.shape)
+        # print(x.shape)
+        # print(self.W.shape)
         z = np.matmul(self.W,x)
         print(z.shape)
         a = self.step(z)
@@ -48,21 +51,15 @@ class Perceptron(object):
         print('\n')
         print("fit")
         t =0
-        while t < self.epochs :
+        E = 1
+        while t < self.epochs:
+            E = 0
             for i in range(X.shape[0]):
-                #print(X[i])
                 x = X[i]
                 y = self.predict(x)
                 e = d[i] - y
-                print("e")
-                print(e)
                 aux = x.reshape(1,13)
                 e = e.reshape(3,1)
-                print(e)
-                print(aux)
-                kl = e * aux
-                print (kl)
-                print(self.W.shape)
                 self.W = self.W + e * aux
             t= t+1
 
@@ -78,7 +75,7 @@ def main():
     # print(d[0].shape)
     # print(d[0].transpose().shape)
 
-    perceptron = Perceptron(input_size=13, saida=3)
+    perceptron = Perceptron(input_size=13, saida=3,epochs=1)
     perceptron.perceptron(X, d)
     print(perceptron.W)
 
