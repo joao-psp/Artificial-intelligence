@@ -1,0 +1,5 @@
+Instalar Pacotes:
+
+sudo apt-get install python3-tk
+pip install matplotlib
+pip install numpy
